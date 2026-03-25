@@ -1,12 +1,13 @@
 import logging
-from typing import Any, Dict, List
 
 from BaseClasses import Entrance, CollectionState, Item, Location, MultiWorld, Region, Tutorial, ItemClassification
 from worlds.AutoWorld import WebWorld, World
 # from . import Items, Locations, Maps, Regions, Rules
+from . import Items, Locations
 from .Options import DeathwormOptions
 
 logger = logging.getLogger("Deathworm")
+
 
 class DeathwormLocation(Location):
     game: str = "Deathworm"
@@ -14,6 +15,7 @@ class DeathwormLocation(Location):
 
 class DeathwormItem(Item):
     game: str = "Deathworm"
+
 
 class DeathwormWeb(WebWorld):
     tutorials = [Tutorial(
@@ -37,11 +39,11 @@ class DeathwormWorld(World):
     web = DeathwormWeb()
     required_client_version = (0, 6, 6)  # 1.2.0-prerelease or higher
 
-    item_name_to_id = {}
-    item_name_groups = {}
+    item_name_to_id = {data["name"]: item_id for item_id, data in Items.item_table.items()}
+    item_name_groups = Items.item_name_groups
 
-    location_name_to_id = {}
-    location_name_groups = {}
+    location_name_to_id = {data["name"]: loc_id for loc_id, data in Locations.location_table.items()}
+    location_name_groups = Locations.location_name_groups
 
     def __init__(self, multiworld: MultiWorld, player: int):
         super().__init__(multiworld, player)
